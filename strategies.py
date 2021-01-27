@@ -1,3 +1,4 @@
+import math
 from typing import List
 from abc import ABC, abstractmethod
 from collections import deque, Counter
@@ -43,22 +44,25 @@ class GridStrategy(StrategyBase):
     @staticmethod
     def create_orders(dataset: DataSet) -> List[Order]:
         orders = [dataset.create_order() for _ in range(dataset.total_teams)]
+        pizzas = sorted(dataset.pizzas, key=lambda p: len(p.ingredients), reverse=True)
 
         for order in track(orders, description='Order processing...'):
             for _ in range(order.team):
 
-                if not dataset.pizzas:
+                if not pizzas:
                     break
 
                 best_pizza_index = 0
-                best_pizza_score = 0
-                for i, pizza in enumerate(dataset.pizzas):
-                    score = len(order.unique_ingredients | set(pizza.ingredients)) ** 2
+                best_pizza_score = -math.inf
+                for i, pizza in enumerate(pizzas):
+                    pizza_ingredients = set(pizza.ingredients)
+                    score = (len(order.unique_ingredients | pizza_ingredients) ** 2 -
+                             len(order.unique_ingredients & pizza_ingredients) ** 2)
                     if score > best_pizza_score:
                         best_pizza_index = i
                         best_pizza_score = score
 
-                best_pizza = dataset.pizzas.pop(best_pizza_index)
+                best_pizza = pizzas.pop(best_pizza_index)
                 order.add_pizza(best_pizza)
 
         return [order for order in orders if order.is_full]

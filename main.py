@@ -79,4 +79,4 @@ def main(strategy: Type[strategies.StrategyBase]):
 
 
 if __name__ == '__main__':
-    main(strategy=strategies.IngredientsFrequencyStrategy)
+    main(strategy=strategies.GridStrategy)
