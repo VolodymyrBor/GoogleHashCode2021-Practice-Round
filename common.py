@@ -1,4 +1,5 @@
 from contextlib import contextmanager
+from typing import Iterable, Generator
 from timeit import default_timer as timer
 
 from rich.text import Text
@@ -16,3 +17,8 @@ def measure(text: str):
         text = Text(f'Time spent on {text}: ')
         text.append(f'{delta:f}s', style='blue')
         rprint(text)
+
+
+def flatten_chain(iterable: Iterable[Iterable]) -> Generator:
+    for item in iterable:
+        yield from item
