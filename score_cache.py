@@ -1,6 +1,6 @@
 import json
-from pathlib import Path
 from typing import Dict
+from pathlib import Path
 
 Scores = Dict[str, int]
 

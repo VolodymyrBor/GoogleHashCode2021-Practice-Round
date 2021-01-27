@@ -5,7 +5,7 @@ from collections import deque, Counter
 from rich.progress import track
 
 from common import flatten_chain
-from pizza_structures import DataSet, Order, TeamType, TeamsOverError
+from pizza_structures import DataSet, Order, TeamsOverError
 
 
 class StrategyBase(ABC):
@@ -53,8 +53,7 @@ class GridStrategy(StrategyBase):
                 best_pizza_index = 0
                 best_pizza_score = 0
                 for i, pizza in enumerate(dataset.pizzas):
-                    order_ingredients = order.unique_ingredients
-                    score = len(order_ingredients | set(pizza.ingredients)) ** 2
+                    score = len(order.unique_ingredients | set(pizza.ingredients)) ** 2
                     if score > best_pizza_score:
                         best_pizza_index = i
                         best_pizza_score = score

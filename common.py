@@ -13,7 +13,6 @@ def measure(text: str):
         yield
     finally:
         delta = timer() - start
-
         text = Text(f'Time spent on {text}: ')
         text.append(f'{delta:f}s', style='blue')
         rprint(text)
