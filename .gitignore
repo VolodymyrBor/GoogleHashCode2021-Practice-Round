@@ -1,0 +1,12 @@
+# IDE
+.idea
+
+# env
+/venv
+
+# datasets
+input_data/*
+!input_data/__init__.py
+
+output_data/*
+!output_data/__init__.py

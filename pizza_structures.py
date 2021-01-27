@@ -1,8 +1,9 @@
 from enum import Enum
-from typing import NamedTuple, Tuple, Iterable, Set, List
+from dataclasses import dataclass
+from typing import NamedTuple, Tuple, Iterable, Set, List, Iterator
 
 
-class TeamType(Enum):
+class TeamType(int, Enum):
     TWO = 2
     THREE = 3
     FOUR = 4
@@ -26,6 +27,10 @@ class Order:
         self._pizzas.append(pizza)
 
     @property
+    def team(self) -> int:
+        return self._team.value
+
+    @property
     def unique_ingredients(self) -> Set[str]:
         unique_ingredients = set()
         for pizza in self._pizzas:
@@ -36,9 +41,23 @@ class Order:
     def score(self) -> int:
         return len(self.unique_ingredients) ** 2
 
+    @property
+    def is_full(self) -> bool:
+        return len(self._pizzas) == self._team.value
+
     def __repr__(self):
         return f'Order({self._team}, {self._pizzas})'
 
+    def __len__(self):
+        return len(self._pizzas)
 
-class DataSet(NamedTuple):
-    pizzas: List[]
+    def __iter__(self) -> Iterator[Pizza]:
+        return iter(self._pizzas)
+
+
+@dataclass
+class DataSet:
+    pizzas: List[Pizza]
+    two_team: int
+    three_team: int
+    four_team: int
