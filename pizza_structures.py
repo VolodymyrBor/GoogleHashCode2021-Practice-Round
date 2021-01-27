@@ -16,6 +16,9 @@ class Pizza(NamedTuple):
     def __repr__(self):
         return f'Pizza({self.pizza_id}, {self.ingredients})'
 
+    def __hash__(self):
+        return self.pizza_id
+
 
 class Order:
 
@@ -55,9 +58,31 @@ class Order:
         return iter(self._pizzas)
 
 
+class TeamsOverError(Exception):
+    pass
+
+
 @dataclass
 class DataSet:
     pizzas: List[Pizza]
     two_team: int
     three_team: int
     four_team: int
+
+    def __post_init__(self):
+        self.total_teams = self.two_team + self.three_team + self.four_team
+
+    def create_order(self) -> Order:
+        if self.two_team > 0:
+            order = Order(team=TeamType.TWO)
+            self.two_team -= 1
+        elif self.three_team > 0:
+            order = Order(team=TeamType.THREE)
+            self.three_team -= 1
+        elif self.four_team > 0:
+            order = Order(team=TeamType.FOUR)
+            self.four_team -= 1
+        else:
+            raise TeamsOverError('Teams are over')
+
+        return order
